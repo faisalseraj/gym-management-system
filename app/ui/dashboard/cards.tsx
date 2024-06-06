@@ -1,3 +1,5 @@
+// 'use client';
+
 import {
   BanknotesIcon,
   ClockIcon,
@@ -5,8 +7,12 @@ import {
   UserGroupIcon,
 } from '@heroicons/react/24/outline';
 
+import { call } from '@/app/lib';
 import { fetchCardData } from '@/app/lib/data';
+import { fetchFeeStatistics } from '@/app/lib/fee-data';
+import { getSession } from 'next-auth/react';
 import { lusitana } from '@/app/ui/fonts';
+import { useAuth } from '@/app/hooks/useAuth';
 
 const iconMap = {
   collected: BanknotesIcon,
@@ -17,6 +23,14 @@ const iconMap = {
 
 export default async function CardWrapper() {
   const {numberOfCustomers,numberOfInvoices, totalPaidInvoices, totalPendingInvoices} =await fetchCardData()
+const statistics =   await call<any>({
+    method: 'GET',
+    path:`v1/fee/statistics`,
+  });
+
+console.log(statistics, "statistics")
+
+
   return (
     <>
       {/* NOTE: comment in this code when you get to this point in the course */}
